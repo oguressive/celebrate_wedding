@@ -2,8 +2,8 @@ html, body {
   margin: 0;
   padding: 0;
   font-family: 'Helvetica Neue', Arial, sans-serif;
-  background: #fefefe;
-  overflow: hidden; /* 背景演出を際立たせるためスクロールを抑制 */
+  background: #000;
+  overflow: hidden;
 }
 
 body {
@@ -13,25 +13,26 @@ body {
   align-items: center;
 }
 
-/* 背景に緩やかなグラデーションアニメーション */
+/* よりサイケな背景アニメーション：カラーがより早く移り変わる */
 .background-animated {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(45deg, #ff9f1c, #e71d36, #2ec4b6, #e4f9f5);
-  background-size: 400% 400%;
-  animation: gradientAnimation 15s ease infinite;
+  background: linear-gradient(45deg, #ff9f1c, #e71d36, #2ec4b6, #e4f9f5, #f72585, #b5179e, #7209b7, #3a0ca3, #4361ee, #4cc9f0);
+  background-size: 1000% 1000%;
+  animation: crazyGradient 5s linear infinite;
   z-index: -1;
 }
 
-@keyframes gradientAnimation {
-  0% { background-position: 0% 50%; }
-  50% { background-position:100% 50%; }
-  100% { background-position: 0% 50%; }
+@keyframes crazyGradient {
+  0% { background-position: 0% 0%;}
+  50% {background-position:100% 100%;}
+  100% {background-position: 0% 0%;}
 }
 
+/* コンテナは半透明 */
 .container {
   text-align: center;
   background: rgba(255,255,255,0.85);
@@ -43,21 +44,11 @@ body {
   margin: 0 auto;
 }
 
-.hidden {
-  display: none;
-}
+.hidden { display: none; }
 
 h1, h2, p {
   margin-bottom: 1em;
   color: #333;
-}
-
-/* レスポンシブ対応: スマホでも見やすいフォントサイズ */
-@media (max-width: 480px) {
-  h1 { font-size: 1.2em; }
-  h2 { font-size: 1.1em; }
-  p { font-size: 0.9em; }
-  #nameInput { width: 100%; }
 }
 
 #nameInput {
@@ -86,7 +77,6 @@ button:hover {
   transform: scale(1.05);
 }
 
-/* 祝福メッセージ出現時のアニメーション */
 #message-section {
   animation: fadeIn 1s ease forwards;
 }
@@ -96,12 +86,11 @@ button:hover {
   to {opacity: 1; transform: translateY(0);}
 }
 
-/* ハート型の漂うパーティクル */
-.heart {
+/* パーティクル(heart, star等) */
+.particle {
   position: absolute;
   width: 32px;
   height: 32px;
-  background-image: url('assets/heart.png');
   background-size: cover;
   pointer-events: none;
   animation: float 3s ease-in-out infinite;
@@ -115,9 +104,75 @@ button:hover {
   }
   50% {
     opacity: 1;
+    transform: translateY(-50px) scale(1);
   }
   100% {
     transform: translateY(-150px) scale(1.2);
     opacity: 0;
   }
+}
+
+/* ディスコボール */
+#disco-ball {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 100px;
+  background-image: url('assets/disco-ball.png'); /* ディスコボールっぽい画像を用意する */
+  background-size: cover;
+  animation: spin 2s linear infinite, flash 0.5s alternate infinite;
+  opacity: 0;
+}
+
+@keyframes spin {
+  from {transform: translateX(-50%) rotate(0deg);}
+  to {transform: translateX(-50%) rotate(360deg);}
+}
+
+/* ディスコボール点滅 */
+@keyframes flash {
+  from {filter: brightness(0.5);}
+  to {filter: brightness(1.5);}
+}
+
+/* ディスコボール表示時にフェードイン */
+#disco-ball.show {
+  opacity: 1;
+  transition: opacity 1s ease;
+}
+
+/* マラソンテキスト */
+.marquee {
+  position: fixed;
+  bottom: 20px;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.marquee span {
+  display: inline-block;
+  padding-left: 100%;
+  animation: marqueeAnimation 10s linear infinite;
+  font-size: 20px;
+  color: #fff;
+}
+
+@keyframes marqueeAnimation {
+  from { transform: translateX(0%); }
+  to { transform: translateX(-100%); }
+}
+
+/* お祝いボタン押下時に背景が点滅するクラス */
+.flash-bg {
+  animation: flashBG 0.3s ease 3;
+}
+
+@keyframes flashBG {
+  0% {filter: brightness(1);}
+  50% {filter: brightness(2);}
+  100% {filter: brightness(1);}
 }

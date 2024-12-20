@@ -1,24 +1,25 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>結婚おめでとう</title>
-  <link rel="stylesheet" href="style.css"/>
-</head>
 <body>
   <div class="background-animated"></div>
+
+  <!-- ディスコボール -->
+  <div id="disco-ball" class="hidden"></div>
+  
+  <!-- 横スクロールテキスト -->
+  <div class="marquee">
+    <span>CONGRATS! 🎉 FOREVER ♥ LOVE ♥ HAPPY WEDDING! 💒</span>
+  </div>
+
   <div class="container">
     <div id="input-section">
-      <h1>ウエディング</h1>
-      <p>お祝いしたい方の名前を入力してね</p>
+      <h1>永遠の誓い ~ Your Everlasting Vows ~</h1>
+      <p>お祝いしたい方の名前を入力してください:</p>
       <input id="nameInput" type="text" placeholder="例: 佐藤さん"/>
       <button id="enterBtn">Enter</button>
     </div>
 
     <div id="message-section" class="hidden">
       <h2 id="congratsMessage"></h2>
-      <button id="celebrateBtn">お祝いするよ！</button>
+      <button id="celebrateBtn">お祝いする！</button>
       <button id="shareBtn">URLをコピー</button>
     </div>
   </div>
@@ -27,4 +28,3 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   <script src="script.js"></script>
 </body>
-</html>

@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const celebrateBtn = document.getElementById('celebrateBtn');
   const shareBtn = document.getElementById('shareBtn');
 
-  // サウンド準備
   const bgMusic = new Audio('assets/bg-music.mp3');
   bgMusic.loop = true;
   bgMusic.volume = 0.3;
@@ -15,36 +14,45 @@ document.addEventListener('DOMContentLoaded', () => {
   const cheerSound = new Audio('assets/cheer.mp3');
   cheerSound.volume = 0.7;
 
+  const discoBall = document.getElementById('disco-ball');
+
   enterBtn.addEventListener('click', () => {
     const name = nameInput.value.trim();
     if (name) {
       congratsMessage.textContent = `${name}、結婚おめでとう！`;
       inputSection.classList.add('hidden');
       messageSection.classList.remove('hidden');
-
-      // ユーザー操作後にBGM再生開始（モバイル対応）
-      bgMusic.play().catch(() => {
-        // モバイルの自動再生制限などで失敗した場合は後で再試行可能
-      });
-
-      // 背景にハートを定期的に浮かべる
-      startHeartsAnimation();
+      bgMusic.play().catch(()=>{});
+      startParticles();
     } else {
       alert("名前を入力してください！");
     }
   });
 
   celebrateBtn.addEventListener('click', () => {
-    // コンフェッティ発生
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6 }
-    });
+    // コンフェッティ連発
+    for(let i = 0; i < 5; i++){
+      setTimeout(() => {
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+      }, i * 200);
+    }
 
-    // 祝福サウンド再生
+    // ディスコボール表示
+    discoBall.classList.add('show');
+
+    // 背景点滅
+    document.querySelector('.background-animated').classList.add('flash-bg');
+
     cheerSound.currentTime = 0;
     cheerSound.play();
+
+    setTimeout(()=>{
+      document.querySelector('.background-animated').classList.remove('flash-bg');
+    },1000);
   });
 
   shareBtn.addEventListener('click', async () => {
@@ -56,27 +64,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  function startHeartsAnimation() {
-    // 一定間隔でハートを生成
+  function startParticles() {
+    // 複数パーティクル(heart, starなど)を定期的に生成
+    const shapes = ['heart.png', 'star.png', 'diamond.png']; // assetsに用意
     setInterval(() => {
-      createFloatingHeart();
-    }, 1500);
+      createFloatingParticle(shapes[Math.floor(Math.random()*shapes.length)]);
+    }, 1000);
   }
 
-  function createFloatingHeart() {
-    const heart = document.createElement('div');
-    heart.classList.add('heart');
-    document.body.appendChild(heart);
+  function createFloatingParticle(imgName) {
+    const particle = document.createElement('div');
+    particle.classList.add('particle');
+    particle.style.backgroundImage = `url('assets/${imgName}')`;
+    document.body.appendChild(particle);
 
-    // 横位置をランダムに決定
     const maxWidth = window.innerWidth;
     const startX = Math.random() * (maxWidth - 32);
-    heart.style.left = `${startX}px`;
-    heart.style.bottom = '-50px';
+    particle.style.left = `${startX}px`;
+    particle.style.bottom = '-50px';
 
-    // 一定時間後に削除
     setTimeout(() => {
-      heart.remove();
+      particle.remove();
     }, 3000);
   }
 });
