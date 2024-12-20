@@ -1,0 +1,123 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  background: #fefefe;
+  overflow: hidden; /* 背景演出を際立たせるためスクロールを抑制 */
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 背景に緩やかなグラデーションアニメーション */
+.background-animated {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, #ff9f1c, #e71d36, #2ec4b6, #e4f9f5);
+  background-size: 400% 400%;
+  animation: gradientAnimation 15s ease infinite;
+  z-index: -1;
+}
+
+@keyframes gradientAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position:100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.container {
+  text-align: center;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(5px);
+  border-radius: 12px;
+  padding: 20px;
+  max-width: 300px;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.hidden {
+  display: none;
+}
+
+h1, h2, p {
+  margin-bottom: 1em;
+  color: #333;
+}
+
+/* レスポンシブ対応: スマホでも見やすいフォントサイズ */
+@media (max-width: 480px) {
+  h1 { font-size: 1.2em; }
+  h2 { font-size: 1.1em; }
+  p { font-size: 0.9em; }
+  #nameInput { width: 100%; }
+}
+
+#nameInput {
+  padding: 10px;
+  margin-bottom: 16px;
+  width: 100%;
+  font-size: 16px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  margin: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  background: #ff9f1c;
+  color: #fff;
+  font-size: 16px;
+  transition: transform 0.2s ease;
+}
+
+button:hover {
+  background: #ff7f0f;
+  transform: scale(1.05);
+}
+
+/* 祝福メッセージ出現時のアニメーション */
+#message-section {
+  animation: fadeIn 1s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(20px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+
+/* ハート型の漂うパーティクル */
+.heart {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  background-image: url('assets/heart.png');
+  background-size: cover;
+  pointer-events: none;
+  animation: float 3s ease-in-out infinite;
+  opacity: 0;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0) scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-150px) scale(1.2);
+    opacity: 0;
+  }
+}
