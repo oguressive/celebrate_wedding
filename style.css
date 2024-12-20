@@ -2,8 +2,8 @@ html, body {
   margin: 0;
   padding: 0;
   font-family: 'Helvetica Neue', Arial, sans-serif;
-  background: #000;
   overflow: hidden;
+  background: #000; /* 背景は下地黒だが、上にグラデが覆う */
 }
 
 body {
@@ -13,26 +13,60 @@ body {
   align-items: center;
 }
 
-/* よりサイケな背景アニメーション：カラーがより早く移り変わる */
+/* 元のグラデーション背景を復活 + 多重レイヤー化 */
 .background-animated {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(45deg, #ff9f1c, #e71d36, #2ec4b6, #e4f9f5, #f72585, #b5179e, #7209b7, #3a0ca3, #4361ee, #4cc9f0);
-  background-size: 1000% 1000%;
-  animation: crazyGradient 5s linear infinite;
+  /* メインレイヤー */
+  background: linear-gradient(45deg, #ff9f1c, #e71d36, #2ec4b6, #e4f9f5);
+  background-size: 400% 400%;
+  animation: mainGradient 10s ease infinite;
+  z-index: -3;
+}
+
+/* メイングラデーション回転 */
+@keyframes mainGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position:100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* 擬似要素で複数レイヤーのグラデーションを重ねて、より複雑な色の動きを出す */
+.background-animated::before, .background-animated::after {
+  content: "";
+  position: absolute;
+  top:0; left:0;
+  width:100%; height:100%;
+  background: linear-gradient(-45deg, #ff9f1c, #e71d36, #2ec4b6, #e4f9f5);
+  background-size: 400% 400%;
+  mix-blend-mode: screen;
+  opacity: 0.5;
+}
+
+/* beforeはメインより速く動く */
+.background-animated::before {
+  animation: subGradient1 6s linear infinite;
+  z-index: -2;
+}
+
+/* afterは別の周期で動かして、複雑な干渉模様を作る */
+.background-animated::after {
+  animation: subGradient2 12s linear infinite;
   z-index: -1;
 }
 
-@keyframes crazyGradient {
-  0% { background-position: 0% 0%;}
-  50% {background-position:100% 100%;}
-  100% {background-position: 0% 0%;}
+@keyframes subGradient1 {
+  0% { background-position: 0% 0%; }
+  100% { background-position:100% 100%; }
+}
+@keyframes subGradient2 {
+  0% { background-position: 100% 100%; }
+  100% { background-position: 0% 0%; }
 }
 
-/* コンテナは半透明 */
 .container {
   text-align: center;
   background: rgba(255,255,255,0.85);
@@ -86,7 +120,7 @@ button:hover {
   to {opacity: 1; transform: translateY(0);}
 }
 
-/* パーティクル(heart, star等) */
+/* パーティクル（heart, star, diamond等） */
 .particle {
   position: absolute;
   width: 32px;
@@ -99,15 +133,15 @@ button:hover {
 
 @keyframes float {
   0% {
-    transform: translateY(0) scale(0.8);
+    transform: translateY(0) scale(0.8) rotate(0deg);
     opacity: 0;
   }
   50% {
     opacity: 1;
-    transform: translateY(-50px) scale(1);
+    transform: translateY(-50px) scale(1) rotate(180deg);
   }
   100% {
-    transform: translateY(-150px) scale(1.2);
+    transform: translateY(-150px) scale(1.2) rotate(360deg);
     opacity: 0;
   }
 }
@@ -120,7 +154,7 @@ button:hover {
   transform: translateX(-50%);
   width: 100px;
   height: 100px;
-  background-image: url('assets/disco-ball.png'); /* ディスコボールっぽい画像を用意する */
+  background-image: url('assets/disco-ball.png');
   background-size: cover;
   animation: spin 2s linear infinite, flash 0.5s alternate infinite;
   opacity: 0;
@@ -131,13 +165,11 @@ button:hover {
   to {transform: translateX(-50%) rotate(360deg);}
 }
 
-/* ディスコボール点滅 */
 @keyframes flash {
-  from {filter: brightness(0.5);}
-  to {filter: brightness(1.5);}
+  from {filter: brightness(0.7);}
+  to {filter: brightness(1.3);}
 }
 
-/* ディスコボール表示時にフェードイン */
 #disco-ball.show {
   opacity: 1;
   transition: opacity 1s ease;

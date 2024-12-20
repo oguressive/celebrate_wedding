@@ -6,7 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const congratsMessage = document.getElementById('congratsMessage');
   const celebrateBtn = document.getElementById('celebrateBtn');
   const shareBtn = document.getElementById('shareBtn');
+  const discoBall = document.getElementById('disco-ball');
 
+  // ユーザーが準備済みのBGMを再生
   const bgMusic = new Audio('assets/bg-music.mp3');
   bgMusic.loop = true;
   bgMusic.volume = 0.3;
@@ -14,14 +16,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const cheerSound = new Audio('assets/cheer.mp3');
   cheerSound.volume = 0.7;
 
-  const discoBall = document.getElementById('disco-ball');
-
   enterBtn.addEventListener('click', () => {
     const name = nameInput.value.trim();
     if (name) {
       congratsMessage.textContent = `${name}、結婚おめでとう！`;
       inputSection.classList.add('hidden');
       messageSection.classList.remove('hidden');
+
       bgMusic.play().catch(()=>{});
       startParticles();
     } else {
@@ -30,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   celebrateBtn.addEventListener('click', () => {
-    // コンフェッティ連発
+    // コンフェッティ連射
     for(let i = 0; i < 5; i++){
       setTimeout(() => {
         confetti({
@@ -65,8 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   function startParticles() {
-    // 複数パーティクル(heart, starなど)を定期的に生成
-    const shapes = ['heart.png', 'star.png', 'diamond.png']; // assetsに用意
+    const shapes = ['heart.png', 'star.png', 'diamond.png']; // colorfulな画像をassetsに用意
     setInterval(() => {
       createFloatingParticle(shapes[Math.floor(Math.random()*shapes.length)]);
     }, 1000);
